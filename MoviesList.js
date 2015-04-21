@@ -56,6 +56,9 @@ class MoviesList extends Component {
         });
 
         this.movies = tmp;
+
+        this.setState({dataSource: this.state.dataSource.cloneWithRows(this.movies)});
+
         console.log(this.movies);
 
     }
