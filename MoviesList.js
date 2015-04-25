@@ -2,6 +2,8 @@
 
 var React = require('react-native');
 
+// See Object Destructuring - Part of ECMAScript 6 proposal.
+// (http://tinyurl.com/lkb87jo)
 var {
     StyleSheet,
     Image,
@@ -26,7 +28,6 @@ class MoviesList extends Component {
         var dataSource = new ListView.DataSource(
             {rowHasChanged: (r1, r2) => r1.ranking !== r2.ranking}
         );
-        this.movies = ['Loading...']
         this.state = {
             dataSource: dataSource.cloneWithRows(this._genRows())
         };
@@ -43,23 +44,22 @@ class MoviesList extends Component {
                 console.log("Something bad happened...");
             });
 
-        return this.movies;
+        return ["Loading ..."];
     }
 
     _handleResponse(jsonResponse) {
         console.log(this.movies);
 
-        var tmp = [];
+        var movies = [];
 
         jsonResponse.results.collection1.forEach(function(movie) {
-            tmp.push(movie.title.text);
+            movies.push(movie.title.text);
         });
 
-        this.movies = tmp;
+        this.setState({dataSource: this.state.dataSource.cloneWithRows(movies)});
 
-        this.setState({dataSource: this.state.dataSource.cloneWithRows(this.movies)});
 
-        console.log(this.movies);
+        console.log(movies);
 
     }
 
