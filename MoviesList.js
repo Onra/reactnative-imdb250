@@ -15,11 +15,24 @@ var {
     Component
 } = React;
 
-// var styles = StyleSheet.create({
-//     width: 80,
-//     height: 80,
-//     maringRight: 10
-// });
+var styles = StyleSheet.create({
+
+    thumb: {
+        width: 34,
+        height: 50,
+        marginRight: 10
+    },
+
+    separator: {
+        height: 1,
+        backgroundColor: '#dddddd'
+    },
+
+    rowContainer: {
+        flexDirection: 'row',
+        padding: 20
+    }
+});
 
 class MoviesList extends Component {
 
@@ -44,22 +57,21 @@ class MoviesList extends Component {
                 console.log("Something bad happened...");
             });
 
-        return ["Loading ..."];
+        return [];
     }
 
     _handleResponse(jsonResponse) {
-        console.log(this.movies);
 
         var movies = [];
 
         jsonResponse.results.collection1.forEach(function(movie) {
-            movies.push(movie.title.text);
+            movies.push(movie);
         });
 
         this.setState({dataSource: this.state.dataSource.cloneWithRows(movies)});
 
 
-        console.log(movies);
+        // console.log(movies);
 
     }
 
@@ -68,11 +80,18 @@ class MoviesList extends Component {
     }
 
     renderRow(rowData, sectionID, rowID) {
+
+        console.log(rowData.image.src);
+
         return (
-            <TouchableHighlight onPress={() => this.rowPressed(rowData)}
+            <TouchableHighlight onPress={() => this.rowPressed(rowData.title.text)}
             underlayColor='#dddddd'>
             <View>
-            <Text>{rowData}</Text>
+                <View style={styles.rowContainer}>
+                    <Image style={styles.thumb} source={{ uri: rowData.image.src }} />
+                    <Text>{rowData.title.text}</Text>
+                </View>
+                <View style={styles.separator} />
             </View>
             </TouchableHighlight>
         );
